@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+</head>
+<body>
+    <nav class = "navbar navbar-dark bg-dark">
+        <span class ="navbar-brand mb-0 h1 w-100 text-center">Weather Dashboard</span>
+    </nav>
+    <container class ="container">
+        <section class = row>
+            <aside class ="col-4 bg-light">
+                <p class ="search-header my-1">Search For a City:</p>
+                <div class = "input-group mb-3">
+                    <input id = "city-input" typw ="text" class = "form-control" placeholder="Enter City Name Here" aria-label="Enter City Name Here">
+                    <div class = "input-group-append">
+                        <button class = "btn btn-primary" type = "button" id ="search-button">
+                            <i class= "fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <button class = "btn btn-primary mb-3" type="button" id="clear-history">Clear History</button>
+                <form id ="history"></form>
+            </aside> 
+        </section>
+    </container>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
