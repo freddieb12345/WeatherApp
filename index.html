@@ -10,26 +10,76 @@
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
 </head>
 <body>
+    <!-- Creates navbar at the top of page with header of 'Weather Dashboard' -->
     <nav class = "navbar navbar-dark bg-dark">
         <span class ="navbar-brand mb-0 h1 w-100 text-center">Weather Dashboard</span>
     </nav>
-    <container class ="container">
-        <section class = row>
-            <aside class ="col-4 bg-light">
-                <p class ="search-header my-1">Search For a City:</p>
-                <div class = "input-group mb-3">
-                    <input id = "city-input" typw ="text" class = "form-control" placeholder="Enter City Name Here" aria-label="Enter City Name Here">
-                    <div class = "input-group-append">
-                        <button class = "btn btn-primary" type = "button" id ="search-button">
-                            <i class= "fas fa-search"></i>
+
+    
+    <main class ="container"> <!-- Creates main container for the rest of the content and formats it to be in the center of the screen -->
+        <section class = row> <!-- Formats the content to be in a row -->
+            <aside class ="col-4 bg-light"> <!-- Creates left hand side content that contains the search bar and search history -->
+                <label class ="search-header my-1">Search For a City:</label> <!-- Creates label for input below -->
+                <div class = "input-group mb-3"> 
+                    <input id = "city-input" type ="text" class = "form-control" placeholder="Enter City Name Here" aria-label="Enter City Name Here"> <!-- Creates input field for City -->
+                    <div class = "input-group-append"> <!-- Appends the below button to the end of the input field  -->
+                        <button class = "btn btn-primary" type = "button" id ="search-button"> <!-- Creates submit button -->
+                            <i class= "fas fa-search"></i> <!-- Formats button to have search icon on it -->
                         </button>
                     </div>
                 </div>
-                <button class = "btn btn-primary mb-3" type="button" id="clear-history">Clear History</button>
-                <form id ="history"></form>
-            </aside> 
+                <button class = "btn btn-primary mb-3" type="button" id="clear-history">Clear History</button> <!-- Creates clear history button  -->
+                <form id ="history"></form> <!-- Creates form for search history -->
+            </aside>
+            
+            <card class = "col-8"> <!-- Creates card that takes up the remaining 8 columns of the page -->
+                <row class = "row mr-0 "> 
+                    <container class="col-12 border border-dark m-3 rounded"> <!-- Creates a container and formats a border around it -->
+                        <row class = "row "> <!-- Formats the content to be in a row -->
+                            <container class="col-12"> <!-- Creates a container that takes up the full 12  columns of the parent container -->
+                                <span id = "city-name" class ="city-name align-middle"></span><!--  Creates section for city name -->
+                                <img id = "current-pic" src="placeholder" alt>
+                            </container>    
+                        </row>
+                        <row class="row"> <!-- Creates section for temperature -->
+                            <container class="col-12"> 
+                                <p id="temperature"></p>
+                            </container>
+                        </row>
+                        <row class="row"> <!-- Creates section for humidity -->
+                            <container class="col-12">
+                                <p id="humidity"></p>
+                            </container>
+                        </row>
+                        <row class="row"> <!-- Creates section for wind speed -->
+                            <container class="col-12">
+                                <p id="wind-speed"></p>
+                            </container>
+                        </row>
+                        <row class="row"> <!-- Creates section for uv index -->
+                            <container class="col-12 d-flex">
+                                <p id="UV-index"></p>
+                            </container>
+                        </row>
+                    </container>    
+                </row>
+                <!-- Creating the 5 day forecast -->
+                <row class ="row">
+                    <container class="col-12">
+                        <h3>5-Day Forecast</h3>
+                    </container>
+                </row>
+                <!-- Creating 5 cards for the 5 day forecast -->
+                <row class="row">
+                    <card class="col forecast bg-primary text-white ml-3 mb-3 rounded"></card>
+                    <card class="col forecast bg-primary text-white ml-3 mb-3 rounded"></card>
+                    <card class="col forecast bg-primary text-white ml-3 mb-3 rounded"></card>
+                    <card class="col forecast bg-primary text-white ml-3 mb-3 rounded"></card>
+                    <card class="col forecast bg-primary text-white ml-3 mb-3 rounded"></card>
+                </row>
+            </card> 
         </section>
-    </container>
+    </main>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="assets/js/script.js"></script>
 </body>
