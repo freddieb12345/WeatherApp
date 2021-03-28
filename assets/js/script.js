@@ -7,6 +7,7 @@ const windEl = document.getElementById("wind-speed");
 const uvEl = document.getElementById("UV-index");
 const searchHistoryEl = document.getElementById("history");
 const clearHistoryBtn = document.getElementById("clear-history")
+const imgEl = document.getElementById("current-pic");
 
 const APIKey = "73e080bd08077adb9fa1fd1d913233fc";
 var searchHistory = JSON.parse(localStorage.getItem("input")) || [];
@@ -21,13 +22,18 @@ function searchCity(cityName) {
         })
         .then(function(data){
             //Display city name and date
-            /* console.log(data); */
+            console.log(data);
             const currentDate = new Date(data.dt*1000);
             /* console.log(currentDate); */
             const day = currentDate.getDate();
             const month = currentDate.getMonth() + 1;
             const year = currentDate.getFullYear();
             cityNameEl.textContent = data.name + ' - ' + day + '/' + month + '/' + year;
+            //Display picture
+            var weatherImg = data.weather[0].icon;
+            imgEl.setAttribute("src","https://openweathermap.org/img/wn/" + weatherImg + "@2x.png");
+            imgEl.setAttribute("alt", data.weather[0].description);
+
             //Display temperature in celsius
             var tempCelsius = Math.round(data.main.temp - 273); 
             tempEl.textContent = 'Temperature - ' + tempCelsius + '°C';
