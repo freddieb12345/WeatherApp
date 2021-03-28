@@ -17,6 +17,7 @@ function searchCity(cityName) {
             return response.json();
         })
         .then(function(data){
+            //Display city name and date
             console.log(data);
             const currentDate = new Date(data.dt*1000);
             console.log(currentDate);
@@ -24,8 +25,11 @@ function searchCity(cityName) {
             const month = currentDate.getMonth() + 1;
             const year = currentDate.getFullYear();
             cityNameEl.textContent = data.name + ' - ' + day + '/' + month + '/' + year;
-            var tempCelsius = Math.round(data.main.temp - 273);
+            //Display temperature in celsius
+            var tempCelsius = Math.round(data.main.temp - 273); 
             tempEl.textContent = 'Temperature - ' + tempCelsius + '°C';
+            //Display Humidity
+            humidityEl.textContent = 'Humidity - ' + data.main.humidity + '%';
 
         })
 }
