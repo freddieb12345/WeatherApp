@@ -1,6 +1,10 @@
 const userInputEl = document.getElementById("city-input");
 const searchButtonEl = document.getElementById("search-button");
 const cityNameEl = document.getElementById("city-name");
+const tempEl = document.getElementById("temperature");
+const humidityEl = document.getElementById("humidity");
+const windEl = document.getElementById("wind-speed");
+const uvEl = document.getElementById("UV-index");
 
 const APIKey = "73e080bd08077adb9fa1fd1d913233fc";
 var searchHistory = JSON.parse(localStorage.getItem("input")) || [];
@@ -14,7 +18,15 @@ function searchCity(cityName) {
         })
         .then(function(data){
             console.log(data);
-            cityNameEl.textContent = data.name;
+            const currentDate = new Date(data.dt*1000);
+            console.log(currentDate);
+            const day = currentDate.getDate();
+            const month = currentDate.getMonth() + 1;
+            const year = currentDate.getFullYear();
+            cityNameEl.textContent = data.name + ' - ' + day + '/' + month + '/' + year;
+            var tempCelsius = Math.round(data.main.temp - 273);
+            tempEl.textContent = 'Temperature - ' + tempCelsius + '°C';
+
         })
 }
 
