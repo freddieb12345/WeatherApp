@@ -142,6 +142,7 @@ searchButtonEl.addEventListener("click",function(){
 //Creates clear history button functionallity
 clearHistoryBtn.addEventListener("click", function() {
     searchHistory = [];
+    localStorage.setItem("input", JSON.stringify(searchHistory))
     loadSearchHistory();
 })
 
