@@ -71,7 +71,7 @@ function searchCity(cityName) {
             for(var i =0; i < forecastElements.length ; i++){
                 forecastElements[i].innerHTML = "";
                 console.log(i+1);
-                const forecastDate = new Date(data.list[i].dt*1000);
+                const forecastDate = new Date(data.list[i+1].dt*1000);
                 const forecastDay = forecastDate.getDate();
                 const forecastMonth = forecastDate.getMonth() + 1;
                 const forecastYear = forecastDate.getFullYear()
@@ -79,6 +79,11 @@ function searchCity(cityName) {
                 forecastDateEl.setAttribute("class", "mt-3 mb-0 forecast-date");
                 forecastDateEl.textContent = forecastDay + '/' + forecastMonth + '/' + forecastYear;
                 forecastElements[i].append(forecastDateEl);
+
+                const forecastImgEl = document.createElement("img");
+                forecastImgEl.setAttribute("src","https://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png");
+                forecastImgEl.setAttribute("alt", data.list[i].weather[0].description);
+                forecastElements[i].append(forecastImgEl);
             }
         })
         })
