@@ -5,6 +5,7 @@ const tempEl = document.getElementById("temperature");
 const humidityEl = document.getElementById("humidity");
 const windEl = document.getElementById("wind-speed");
 const uvEl = document.getElementById("UV-index");
+const searchHistoryEl = document.getElementById("history");
 
 const APIKey = "73e080bd08077adb9fa1fd1d913233fc";
 var searchHistory = JSON.parse(localStorage.getItem("input")) || [];
@@ -33,6 +34,7 @@ function searchCity(cityName) {
             humidityEl.textContent = 'Humidity - ' + data.main.humidity + '%';
             //Display Wind speed
             var windMph = Math.round(data.wind.speed * 2.23694);
+            /* console.log(data.wind.speed); */
             windEl.textContent = 'Wind-speed - ' + windMph + 'mph';
             //Create variables for latitude and longitude to use in the UV API
             var latitude = data.coord.lat;
@@ -41,15 +43,15 @@ function searchCity(cityName) {
             /* console.log(latitude);
             console.log(longitude); */
             /* searchUVIndex(latitude,longitude); */
-    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&appid=" + APIKey)
+    fetch("https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + APIKey)
         .then(function(response) {
             return response.json();
         })
         .then(function(data){
-            /* console.log(data); */
+            console.log(data);
             uvEl.textContent = 'UV Index - ';
             var UVIndex = document.createElement("span");
-            currentUVindex = data.current.uvi;
+            currentUVindex = data[0].value;
             UVIndex.innerHTML = currentUVindex;
             uvEl.append(UVIndex);
             if(currentUVindex < 2){
@@ -70,8 +72,8 @@ function searchCity(cityName) {
             var forecastElements = document.querySelectorAll(".forecast");
             for(var i =0; i < forecastElements.length ; i++){
                 forecastElements[i].innerHTML = "";
-                console.log(i+1);
-                const forecastDate = new Date(data.list[i+1].dt*1000);
+                const forecastIndex = i*8 + 4; //Selects 9am every morning to take the forecast
+                const forecastDate = new Date(data.list[forecastIndex].dt*1000);
                 const forecastDay = forecastDate.getDate();
                 const forecastMonth = forecastDate.getMonth() + 1;
                 const forecastYear = forecastDate.getFullYear()
@@ -81,17 +83,17 @@ function searchCity(cityName) {
                 forecastElements[i].append(forecastDateEl);
 
                 const forecastImgEl = document.createElement("img");
-                forecastImgEl.setAttribute("src","https://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png");
-                forecastImgEl.setAttribute("alt", data.list[i].weather[0].description);
+                forecastImgEl.setAttribute("src","https://openweathermap.org/img/wn/" + data.list[forecastIndex].weather[0].icon + "@2x.png");
+                forecastImgEl.setAttribute("alt", data.list[forecastIndex].weather[0].description);
                 forecastElements[i].append(forecastImgEl);
 
                 const forecastTempEl = document.createElement("p");
-                const tempCelsiusI = Math.round(data.list[i].main.temp - 273)
+                const tempCelsiusI = Math.round(data.list[forecastIndex].main.temp - 273)
                 forecastTempEl.textContent = "Temp: " + tempCelsiusI + '°C';
                 forecastElements[i].append(forecastTempEl);
 
                 const forecastHumidityEl = document.createElement("p");
-                forecastHumidityEl.textContent = "Humidity: " + data.list[i].main.humidity + "%";
+                forecastHumidityEl.textContent = "Humidity: " + data.list[forecastIndex].main.humidity + "%";
                 forecastElements[i].append(forecastHumidityEl);
             }
         })
@@ -99,14 +101,22 @@ function searchCity(cityName) {
     })
 }
 
-/* function searchUVIndex(latitude,longitude){
-    //Request seperate API data for UV index
-    
-} */
-        
 
-
+function loadSearchHistory() {
+    searchHistoryEl.innerHTML = "";
+    for (var i = 0; i < searchHistory.length; i++) {
+        const historyResult = document.createElement("input");
+        historyResult.setAttribute("type", "text");
+        historyResult.setAttribute("readonly",true);
+        historyResult.setAttribute("class","form-control d-block bg-white");
+        historyResult.setAttribute("value", searchHistory[i]);
         
+        historyResult.addEventListener("click",function() {
+            searchCity(historyResult,value);
+        })
+        searchHistoryEl.append(historyResult);
+    }
+}
 
 searchButtonEl.addEventListener("click",function(){
     const userInput = userInputEl.value;
@@ -115,4 +125,5 @@ searchButtonEl.addEventListener("click",function(){
     searchHistory.push(userInput);
     localStorage.setItem("input", JSON.stringify(searchHistory));
     /* console.log(searchHistory); */
+    loadSearchHistory();
 });
