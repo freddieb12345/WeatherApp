@@ -6,6 +6,7 @@ const humidityEl = document.getElementById("humidity");
 const windEl = document.getElementById("wind-speed");
 const uvEl = document.getElementById("UV-index");
 const searchHistoryEl = document.getElementById("history");
+const clearHistoryBtn = document.getElementById("clear-history")
 
 const APIKey = "73e080bd08077adb9fa1fd1d913233fc";
 var searchHistory = JSON.parse(localStorage.getItem("input")) || [];
@@ -101,7 +102,6 @@ function searchCity(cityName) {
     })
 }
 
-
 function loadSearchHistory() {
     searchHistoryEl.innerHTML = "";
     for (var i = 0; i < searchHistory.length; i++) {
@@ -112,7 +112,7 @@ function loadSearchHistory() {
         historyResult.setAttribute("value", searchHistory[i]);
         
         historyResult.addEventListener("click",function() {
-            searchCity(historyResult,value);
+            searchCity(historyResult.value);
         })
         searchHistoryEl.append(historyResult);
     }
@@ -127,3 +127,13 @@ searchButtonEl.addEventListener("click",function(){
     /* console.log(searchHistory); */
     loadSearchHistory();
 });
+
+clearHistoryBtn.addEventListener("click", function() {
+    searchHistory = [];
+    loadSearchHistory();
+})
+
+loadSearchHistory();
+if(searchHistory.length > 0) {
+    searchCity(searchHistory[searchHistory.length -1]);
+}
