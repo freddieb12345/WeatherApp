@@ -84,6 +84,15 @@ function searchCity(cityName) {
                 forecastImgEl.setAttribute("src","https://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png");
                 forecastImgEl.setAttribute("alt", data.list[i].weather[0].description);
                 forecastElements[i].append(forecastImgEl);
+
+                const forecastTempEl = document.createElement("p");
+                const tempCelsiusI = Math.round(data.list[i].main.temp - 273)
+                forecastTempEl.textContent = "Temp: " + tempCelsiusI + '°C';
+                forecastElements[i].append(forecastTempEl);
+
+                const forecastHumidityEl = document.createElement("p");
+                forecastHumidityEl.textContent = "Humidity: " + data.list[i].main.humidity + "%";
+                forecastElements[i].append(forecastHumidityEl);
             }
         })
         })
