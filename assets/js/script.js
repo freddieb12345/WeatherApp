@@ -9,35 +9,8 @@ const uvEl = document.getElementById("UV-index");
 const APIKey = "73e080bd08077adb9fa1fd1d913233fc";
 var searchHistory = JSON.parse(localStorage.getItem("input")) || [];
 
-function searchUVIndex(latitude,longitude){
-    //Request seperate API data for UV index
-
-    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&appid=" + APIKey)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(data){
-            console.log(data);
-            uvEl.textContent = 'UV Index - ';
-            var UVIndex = document.createElement("span");
-            currentUVindex = data.current.uvi;
-            UVIndex.innerHTML = currentUVindex;
-            uvEl.append(UVIndex);
-            if(currentUVindex < 2){
-                UVIndex.setAttribute("class","badge badge-success")
-            }
-            else if (currentUVindex > 8) {
-                UVIndex.setAttribute("class","badge badge-danger")
-            }
-            else{
-                UVIndex.setAttribute("class","badge badge-warning")
-            }
-                
-        })
-}
-
 function searchCity(cityName) {
-    console.log("hi");
+    /* console.log("hi"); */
     var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
     
     fetch(requestUrl)
@@ -46,9 +19,9 @@ function searchCity(cityName) {
         })
         .then(function(data){
             //Display city name and date
-            console.log(data);
+            /* console.log(data); */
             const currentDate = new Date(data.dt*1000);
-            console.log(currentDate);
+            /* console.log(currentDate); */
             const day = currentDate.getDate();
             const month = currentDate.getMonth() + 1;
             const year = currentDate.getFullYear();
@@ -65,13 +38,57 @@ function searchCity(cityName) {
             var latitude = data.coord.lat;
             var longitude = data.coord.lon;
 
-            console.log(latitude);
-            console.log(longitude);
-            searchUVIndex(latitude,longitude);
+            /* console.log(latitude);
+            console.log(longitude); */
+            /* searchUVIndex(latitude,longitude); */
+    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&appid=" + APIKey)
+        .then(function(response) {
+            return response.json();
         })
+        .then(function(data){
+            /* console.log(data); */
+            uvEl.textContent = 'UV Index - ';
+            var UVIndex = document.createElement("span");
+            currentUVindex = data.current.uvi;
+            UVIndex.innerHTML = currentUVindex;
+            uvEl.append(UVIndex);
+            if(currentUVindex < 2){
+                UVIndex.setAttribute("class","badge badge-success")
+            }
+            else if (currentUVindex > 8) {
+                UVIndex.setAttribute("class","badge badge-danger")
+            }
+            else{
+                UVIndex.setAttribute("class","badge badge-warning")
+            }   
+    fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey)
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(data){
+            console.log(data);
+            var forecastElements = document.querySelectorAll(".forecast");
+            for(var i =0; i < forecastElements.length ; i++){
+                forecastElements[i].innerHTML = "";
+                console.log(i+1);
+                const forecastDate = new Date(data.list[i].dt*1000);
+                const forecastDay = forecastDate.getDate();
+                const forecastMonth = forecastDate.getMonth() + 1;
+                const forecastYear = forecastDate.getFullYear()
+                const forecastDateEl = document.createElement("p");
+                forecastDateEl.setAttribute("class", "mt-3 mb-0 forecast-date");
+                forecastDateEl.textContent = forecastDay + '/' + forecastMonth + '/' + forecastYear;
+                forecastElements[i].append(forecastDateEl);
+            }
+        })
+        })
+    })
 }
 
-
+/* function searchUVIndex(latitude,longitude){
+    //Request seperate API data for UV index
+    
+} */
         
 
 
@@ -79,9 +96,9 @@ function searchCity(cityName) {
 
 searchButtonEl.addEventListener("click",function(){
     const userInput = userInputEl.value;
-    console.log(userInput);
+    /* console.log(userInput); */
     searchCity(userInput);
     searchHistory.push(userInput);
     localStorage.setItem("input", JSON.stringify(searchHistory));
-    console.log(searchHistory);
+    /* console.log(searchHistory); */
 });
