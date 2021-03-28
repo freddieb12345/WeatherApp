@@ -9,9 +9,37 @@ const uvEl = document.getElementById("UV-index");
 const APIKey = "73e080bd08077adb9fa1fd1d913233fc";
 var searchHistory = JSON.parse(localStorage.getItem("input")) || [];
 
+function searchUVIndex(latitude,longitude){
+    //Request seperate API data for UV index
+
+    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&appid=" + APIKey)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data){
+            console.log(data);
+            uvEl.textContent = 'UV Index - ';
+            var UVIndex = document.createElement("span");
+            currentUVindex = data.current.uvi;
+            UVIndex.innerHTML = currentUVindex;
+            uvEl.append(UVIndex);
+            if(currentUVindex < 2){
+                UVIndex.setAttribute("class","badge badge-success")
+            }
+            else if (currentUVindex > 8) {
+                UVIndex.setAttribute("class","badge badge-danger")
+            }
+            else{
+                UVIndex.setAttribute("class","badge badge-warning")
+            }
+                
+        })
+}
+
 function searchCity(cityName) {
     console.log("hi");
     var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
+    
     fetch(requestUrl)
         .then(function(response){
             return response.json();
@@ -33,9 +61,21 @@ function searchCity(cityName) {
             //Display Wind speed
             var windMph = Math.round(data.wind.speed * 2.23694);
             windEl.textContent = 'Wind-speed - ' + windMph + 'mph';
+            //Create variables for latitude and longitude to use in the UV API
+            var latitude = data.coord.lat;
+            var longitude = data.coord.lon;
 
+            console.log(latitude);
+            console.log(longitude);
+            searchUVIndex(latitude,longitude);
         })
 }
+
+
+        
+
+
+        
 
 searchButtonEl.addEventListener("click",function(){
     const userInput = userInputEl.value;
