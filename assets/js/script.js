@@ -30,6 +30,9 @@ function searchCity(cityName) {
             tempEl.textContent = 'Temperature - ' + tempCelsius + '°C';
             //Display Humidity
             humidityEl.textContent = 'Humidity - ' + data.main.humidity + '%';
+            //Display Wind speed
+            var windMph = Math.round(data.wind.speed * 2.23694);
+            windEl.textContent = 'Wind-speed - ' + windMph + 'mph';
 
         })
 }
